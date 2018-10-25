@@ -1,20 +1,19 @@
 const express =require('express');
+var exphbs  = require('express-handlebars');
+
 
 const app = express();
-
-
-//How middleware works
-app.use(function(req,res,next){
-  console.log(Date.now());
- req.name='Tharana Mayuranga';
-  next();
-});
+//Handlebars Middleware
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 //Index Route
 
 app.get('/',(req,res)=>{
-  console.log(req.name);
-  res.send('INDEX');
+  const title ='Huee'
+  res.render('index',{
+    title:title
+  });
 });
 
 
@@ -22,7 +21,7 @@ app.get('/',(req,res)=>{
 //About Route
 
 app.get('/about',(req,res)=>{
-  res.send('About');
+  res.render('about');
 });
 
 const port =5000;
