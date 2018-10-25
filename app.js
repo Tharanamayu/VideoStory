@@ -54,8 +54,13 @@ app.get('/ideas/add', (req, res) => {
 
 //Process Form
 app.post('/ideas', (req, res) => {
-  console.log(req.body);
-  res.send('ok');
+  let errors=[];
+  if(!req.body.title){
+    errors.push({text:'Please add a title'});
+  }
+  if(!req.body.details){
+    errors.push({text:'Please add some details'});
+  }
 });
 
 const port = 5000;
