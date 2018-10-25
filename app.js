@@ -61,6 +61,15 @@ app.post('/ideas', (req, res) => {
   if(!req.body.details){
     errors.push({text:'Please add some details'});
   }
+  if(errors.length>0){
+    res.render('ideas/add',{
+      errors:errors,
+      title:req.body.title,
+      details:req.body.details
+    });
+  }else{
+    res.send('Passed');
+  }
 });
 
 const port = 5000;
