@@ -68,8 +68,17 @@ app.post('/ideas', (req, res) => {
       details:req.body.details
     });
   }else{
-    res.send('Passed');
+    const newUser ={
+      title:req.body.title,
+      details:req.body.details
+    }
+    new Idea(newUser)
+    .save()
+    .then(idea=>{
+      res.redirect('/ideas');
+    })
   }
+ 
 });
 
 const port = 5000;
