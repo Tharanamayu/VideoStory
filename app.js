@@ -11,6 +11,8 @@ const app = express();
 
 //Load routes
 const ideas=require('./routes/ideas');
+const users=require('./routes/users');
+
 
 // Map global promise - get rid of warning
 //mongoose.Promise = global.Promise;
@@ -70,18 +72,12 @@ app.get('/about', (req, res) => {
 
 
 
-//User Login Route
-app.get('/users/login',(req,res)=>{
-  res.send('login');
-});
 
-//User Register Route
-app.get('/users/register',(req,res)=>{
-  res.send('register');
-});
 
 //Use routes
 app.use('/ideas',ideas);
+app.use('/users',users);
+
 
 const port = 5000;
 
