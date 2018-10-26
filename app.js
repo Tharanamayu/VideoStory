@@ -56,6 +56,19 @@ app.get('/ideas',(req,res)=>{
     });
   });
 
+//Edit Idea Form
+app.get('/ideas/edit/:id', (req, res) => {
+  Idea.findOne({
+    _id:req.params.id
+  })
+  .then(idea=>{
+    res.render('ideas/edit',{
+      idea:idea
+    });
+  });
+
+});
+
 //Add Idea Form
 app.get('/ideas/add', (req, res) => {
   res.render('ideas/add');
@@ -81,7 +94,7 @@ app.post('/ideas', (req, res) => {
   }else{
     const newUser ={
       title:req.body.title,
-      details:req.body.details
+      details:req.body.details 
     }
     new Idea(newUser)
     .save()
