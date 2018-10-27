@@ -1,24 +1,24 @@
-const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-//Create Schema
-const UserSchema =new Schema({
-  title:{
-    type:String,
-    required:true
+// Create Schema
+const UserSchema = new Schema({
+  name:{
+    type: String,
+    required: true
   },
   email:{
-    type:String,
-    required:true
+    type: String,
+    required: true
   },
   password:{
-    type:String,
-    required:true
+    type: String,
+    required: true
   },
-  date:{
-    type:Date,
-    default:Date.now
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 
-mongoose.model('users',UserSchema);
+mongoose.model('users', UserSchema);

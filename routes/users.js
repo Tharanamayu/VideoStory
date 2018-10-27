@@ -1,7 +1,12 @@
 const express=require('express');
 const mongoose=require('mongoose');
+const bcrypt=require('bcryptjs');
+//const passport=require('passport');
 const router =express.Router();
 
+//Load User Model
+require('../models/User');
+const User =mongoose.model('users');
 
 //User Login Route
 router.get('/login',(req,res)=>{
@@ -15,23 +20,55 @@ router.get('/register',(req,res)=>{
 
 //Register Form POST
 router.post('/register',(req,res)=>{
-  let errors=[];
+  let errors =[];
   if(req.body.password !=req.body.password2){
-    errors.push({text:'pasowrds do not match'});
+    errors.push({text:'Passwords do not match'});
   }
-  if(req.body.password.length<4){
-    errors.push({text:'passowrds must be at least 4 charcters'});
+
+  if(req.body.password <4){
+    errors.push({text:'Password must be at least 4 charcters'});
   }
-  if(errors.lenght>0){
+  if(errors.length>0){
     res.render('users/register',{
-      errors:error,
+      errors:errors,
       name:req.body.name,
       email:req.body.email,
       password:req.body.password,
       password2:req.body.password2
     });
   }else{
-    res.send()
+    User.findOne({email:req.body.email})
+      .then(user=>{
+        if(user){
+          req.flash('error_msg','Email already registered');
+          res.redirect('/users/register');
+        }else{
+          const newUser =new User({
+            name:req.body.name,
+            email:req.body.email,
+            password:req.body.password
+          });
+          bcrypt.genSalt(10,(err,salt)=>{
+            bcrypt.hash(newUser.password,salt,(err,hash)=>{
+              if(err)throw err;
+              newUser.password=hash;
+              newUser.save()
+                .then(user=>{
+                  req.flash('succes_msg','You are now registerd and can log in');
+                  res.redirect('/users/login');
+                })
+                .catch(err=>{
+                  console.log(err);
+                  return;
+                });
+            });
+          });
+        }
+      });
+
+    // console.log(newUser);
+    // res.send('passed');
   }
 });
 module.exports=router;
+
